@@ -8,3 +8,7 @@
 	(define-key map "e" 'waffle-eat)
 	map)
   "Keymap for `waffle-mode'.")
+
+(define-derived-mode waffle-mode nil "waffle"
+  "Major mode for making waffles."
+  (use-local-map waffle-mode-map))
