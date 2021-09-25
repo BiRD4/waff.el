@@ -12,3 +12,5 @@
 (define-derived-mode waffle-mode nil "waffle"
   "Major mode for making waffles."
   (use-local-map waffle-mode-map))
+
+(add-hook 'waffle-mode-hook (lambda () (interactive) (visual-line-mode -1) (setq truncate-lines t)))
