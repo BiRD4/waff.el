@@ -11,7 +11,6 @@
 	(define-key map "o" 'waffle-open)
 	(define-key map "r" 'waffle-remove)
 	(define-key map "e" 'waffle-eat)
-	;; (define-key map "a" 'waffle-add)
 	(define-key map "\C-c\C-b" 'waffle-add-bananas)
 	(define-key map "\C-c\C-u" 'waffle-add-butter)
 	(define-key map "\C-c\C-l" 'waffle-add-blueberries)
@@ -28,7 +27,6 @@
 	(define-key map "\C-c\C-yk" 'waffle-add-yogurt-keylime)
 	(define-key map "\C-c\C-ym" 'waffle-add-yogurt-mango)
 	(define-key map "\C-c\C-ys" 'waffle-add-yogurt-strawban)
-	;; (define-key map "?" 'waffle-help)
 	map)
   "Keymap for `waffle-mode'.")
 

@@ -7,7 +7,7 @@ Use with (require 'waffle-mode)
 Don't call waffle-mode to enter the major mode in a buffer. **It will erase your buffer!**
 Call waffle-open instead. You can bind it like this: (global-set-key (kbd "C-c w") 'waffle-open)
 
-Keymap:
+## Keymap
 - <kbd>i</kbd> - waffle-view-iron                
 - <kbd>p</kbd> - waffle-view-plate               
 - <kbd>f</kbd> - waffle-fill                     
