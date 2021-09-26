@@ -41,11 +41,13 @@
 ;; (add-to-list 'evil-motion-state-modes 'waffle-mode) ; Doesn't work for all binds
 
 (add-hook 'waffle-mode-hook (lambda () (interactive)
+							  (display-line-numbers-mode -1)
 							  (visual-line-mode -1)
 							  (setq-local truncate-lines t)
 							  (setq-default waffle-iron-cooked2 0)
 							  (setq-default waffle-iron-cooked1 0)
-							  (if (timerp waffle-timer) (cancel-timer waffle-timer))))
+							  (if (timerp waffle-timer) (cancel-timer waffle-timer))
+							  (waffle-view-iron)))
 
 ;; Cooking variables
 (defvar-local waffle-iron-view t
@@ -92,6 +94,11 @@
   "Whether waffle mango yogurt.")
 (defvar-local waffle-yogurt-strawbana nil
   "Whether waffle has strawberry banana yogurt.")
+
+(defun waffle-buffer ()
+  (interactive)
+  (switch-to-buffer (get-buffer-create "*Waffle*"))
+  (waffle-mode))
 
 (defun waffle-view-iron ()
   "View waffle iron."

@@ -1,34 +1,36 @@
-waff.el - Add waffles to Emacs
-
-Use with (require 'waffle-mode)
-
-Call waffle-mode to enter the major mode in an empty buffer. It will erase anything in the buffer!
+# waff.el - Add waffles to Emacs
 
 Make tasty waffles by filling the waffle iron with waffle dough, cooking it to perfection, and then putting toppings on your waffle.
 
-Keymap (I'll make this look nicer in the future):
-(define-key map "i" 'waffle-view-iron)
-(define-key map "p" 'waffle-view-plate)
-(define-key map "f" 'waffle-fill)
-(define-key map "c" 'waffle-close)
-(define-key map "l" 'waffle-flip)
-(define-key map "o" 'waffle-open)
-(define-key map "r" 'waffle-remove)
-(define-key map "e" 'waffle-eat)
-(define-key map "\C-c\C-b" 'waffle-add-bananas)
-(define-key map "\C-c\C-u" 'waffle-add-butter)
-(define-key map "\C-c\C-l" 'waffle-add-blueberries)
-(define-key map "\C-c\C-m" 'waffle-add-maplesyrup)
-(define-key map "\C-c\C-r" 'waffle-add-raspberries)
-(define-key map "\C-c\C-s" 'waffle-add-strawberries)
-(define-key map "\C-c\C-w" 'waffle-add-whippedcream)
-(define-key map "\C-c\C-y\C-b" 'waffle-add-yogurt-blueberry)
-(define-key map "\C-c\C-y\C-k" 'waffle-add-yogurt-keylime)
-(define-key map "\C-c\C-y\C-m" 'waffle-add-yogurt-mango)
-(define-key map "\C-c\C-y\C-s" 'waffle-add-yogurt-strawban)
-; Alts
-(define-key map "\C-c\C-yb" 'waffle-add-yogurt-blueberry)
-(define-key map "\C-c\C-yk" 'waffle-add-yogurt-keylime)
-(define-key map "\C-c\C-ym" 'waffle-add-yogurt-mango)
-(define-key map "\C-c\C-ys" 'waffle-add-yogurt-strawban)
-;; (define-key map "?" 'waffle-help) ; Will add this eventually
+Use with (require 'waffle-mode)
+
+Don't call waffle-mode to enter the major mode in a buffer. **It will erase your buffer!**
+Call waffle-open instead. You can bind it like this: (global-set-key (kbd "C-c w") 'waffle-open)
+
+Keymap:
+waffle-view-iron                i
+waffle-view-plate               p
+waffle-fill                     f
+waffle-close                    c
+waffle-flip                     l
+waffle-open                     o
+waffle-remove                   r
+waffle-eat                      e
+waffle-add-bananas              C-c C-b
+waffle-add-butter               C-c C-u
+waffle-add-blueberries          C-c C-l
+waffle-add-maplesyrup           C-c C-m
+waffle-add-raspberries          C-c C-r
+waffle-add-strawberries         C-c C-s
+waffle-add-whippedcream         C-c C-w
+waffle-add-yogurt-blueberry     C-c C-y C-b
+waffle-add-yogurt-keylime       C-c C-y C-k
+waffle-add-yogurt-mango         C-c C-y C-m
+waffle-add-yogurt-strawban      C-c C-y C-s
+waffle-help ? (will add later)
+
+Some alternatives:
+waffle-add-yogurt-blueberry     C-c C-y b
+waffle-add-yogurt-keylime       C-c C-y k
+waffle-add-yogurt-mango         C-c C-y m
+waffle-add-yogurt-strawban      C-c C-y s
