@@ -7,7 +7,7 @@ Use with (require 'waffle-mode)
 Don't call waffle-mode to enter the major mode in a buffer. **It will erase your buffer!**
 Call waffle-open instead. You can bind it like this: (global-set-key (kbd "C-c w") 'waffle-open)
 
-Keymap:
+## Keymap
 - <kbd>i</kbd> - waffle-view-iron                
 - <kbd>p</kbd> - waffle-view-plate               
 - <kbd>f</kbd> - waffle-fill                     
@@ -27,9 +27,8 @@ Keymap:
 - <kbd>C-c C-y C-k</kbd> - waffle-add-yogurt-keylime       
 - <kbd>C-c C-y C-m</kbd> - waffle-add-yogurt-mango         
 - <kbd>C-c C-y C-s</kbd> - waffle-add-yogurt-strawban      
-- <kbd>?</kbd> - waffle-help (will add later)
 
-Some alternatives:
+Some alternative binds:
 - <kbd>C-c C-y b</kbd> - waffle-add-yogurt-blueberry
 - <kbd>C-c C-y k</kbd> - waffle-add-yogurt-keylime
 - <kbd>C-c C-y m</kbd> - waffle-add-yogurt-mango
