@@ -97,13 +97,13 @@
   "View waffle iron."
   (interactive)
   (setq-local waffle-iron-view t)
-  (waffle-iron-draw))
+  (waffle-draw-iron-view))
 
 (defun waffle-view-plate ()
   "View waffle plate."
   (interactive)
   (setq-local waffle-iron-view nil)
-  (waffle-plate-draw))
+  (waffle-draw-plate-view))
 
 (defun waffle-fill ()
   "Fill waffle iron with dough."
@@ -113,15 +113,19 @@
 	(if waffle-iron-open
 		(progn (message "Waffle iron filled.")
 			   (setq-local waffle-iron-filled t)
-			   (setq waffle-timer (run-at-time "1 sec" 5 'waffle-cook)))
-	  (message "Waffle iron is not open."))))
+			   (setq waffle-timer (run-at-time "1 sec" 5 'waffle-cook))
+			   (if waffle-iron-view
+				   (waffle-draw-iron-view)))
+	(message "Waffle iron is not open."))))
 
 (defun waffle-close ()
   "Close waffle iron."
   (interactive)
   (if waffle-iron-open
 	  (progn (message "Waffle iron closed.")
-			 (setq-local waffle-iron-open nil))
+			 (setq-local waffle-iron-open nil)
+			 (if waffle-iron-view
+				 (waffle-draw-iron-view)))
 	(message "Waffle iron already closed.")))
 
 (defun waffle-flip ()
@@ -142,7 +146,9 @@
   (if waffle-iron-open
 	  (message "Waffle iron already open.")
 	(progn (message "Waffle iron opened.")
-		   (setq-local waffle-iron-open t))))
+		   (setq-local waffle-iron-open t)
+		   (if waffle-iron-view
+			   (waffle-draw-iron-view)))))
 
 (defun waffle-remove ()
   "Remove waffle from waffle iron."
@@ -164,7 +170,9 @@
 				   (setq-local waffle-iron-flipped nil)
 				   (setq-default waffle-iron-cooked1 0)
 				   (setq-default waffle-iron-cooked2 0)
-				   (if (not waffle-iron-view) (waffle-plate-draw))))
+				   (if waffle-iron-view
+					   (waffle-draw-iron-view)
+					 (waffle-draw-plate-view))))
 		(message "Waffle iron not open."))
 	(message "No waffle to remove.")))
 
@@ -173,7 +181,9 @@
   (interactive)
   (if waffle-plate-filled
 	  (progn (if (< 40 (max waffle-plate-cooked1 waffle-plate-cooked2))
-				 (message "*Chrunch* ...Wow, that one sure was toasty!")
+				 (if (> 20 (min waffle-plate-cooked1 waffle-plate-cooked2))
+					 (message "Eewww. That one was really unevenly cooked!")
+			   (message "*Crunch* ...Wow, that one sure was toasty!"))
 			   (if (> 20 (min waffle-plate-cooked1 waffle-plate-cooked2))
 				   (message "*Mush* ...mmmm... tastes like... salmonella...")
 				 (message "Waffle eaten!")))
@@ -191,7 +201,7 @@
 			 (setq-local waffle-yogurt-keylime nil)
 			 (setq-local waffle-yogurt-mango nil)
 			 (setq-local waffle-yogurt-strawbana nil)
-			 (if (not waffle-iron-view) (waffle-plate-draw)))
+			 (if (not waffle-iron-view) (waffle-draw-plate-view)))
 	(message "No waffle to eat ;(")))
 
 (defun waffle-cook ()
@@ -202,7 +212,9 @@
 				 (setq-default waffle-iron-cooked1 (+ waffle-iron-cooked1 1))))
 	(progn (setq-default waffle-iron-cooked1 (+ waffle-iron-cooked1 4))
 		   (if (not waffle-iron-open)
-			   (setq-default waffle-iron-cooked2 (+ waffle-iron-cooked2 1))))))
+			   (setq-default waffle-iron-cooked2 (+ waffle-iron-cooked2 1)))))
+  (if (and (eq major-mode 'waffle-mode) waffle-iron-view)
+	  (waffle-draw-iron-view)))
 
 ; There may be a better way to do the toppings :/
 (defun waffle-add-bananas ()
@@ -305,108 +317,82 @@
 				 (waffle-randtop "▆" "light coral" "hot pink" 30)))
 	(message "No waffle on plate.")))
 
-(defun waffle-char (string fg bg)
-  "Replace character at point with string."
-  (delete-char 1)
+(defun waffle-insert (string fg bg)
   (insert (propertize string 'face `(:foreground ,fg :background ,bg))))
+
+(defun waffle-replace (string fg bg len)
+  "Replace len characters at point with string."
+  (delete-char len)
+  (waffle-insert string fg bg))
 
 (defun waffle-randtop (string fg bg num)
   "Randomly put toppings on waffle."
   (save-excursion
-	(dotimes (i num) (goto-char (random 757)) (if (not (eq (% (point) 40) 0)) (waffle-char string fg bg)))))
+	(dotimes (i num)
+	  (goto-char (+ 34 (random 577)))
+	  (if (not (eq (% (point) 34) 0))
+		  (waffle-replace string fg bg 1)))))
 
-(defun waffle-iron-draw ()
-  "Draw waffle iron."
+(defun waffle-draw-iron-view ()
+  "Draw waffle iron view."
   (save-excursion
 	(erase-buffer)
-	(goto-char 0)
-	(if waffle-iron-filled
-		(insert
-"
-          ___________________          
-      ----                   ----      
-    --                           --    
-   -                               -   
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-   -                               -   
-    --                           --    
-      ----                   ----      
-          -------------------          
-                                       ")
-	  (insert
-"
-          ___________________          
-      ----                   ----      
-    --                           --    
-   -                               -   
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-   -                               -   
-    --                           --    
-      ----                   ----      
-          -------------------          
-                                       "))))
+	(waffle-insert
+"               ███               \n" "#3a3a3a" nil)
+	(waffle-draw-big-rect "#3a3a3a")
+	(if waffle-iron-open
+		(if waffle-iron-filled
+			(waffle-draw-waffle)
+		  (waffle-draw-pattern "#555555")))))
 
-(defun waffle-plate-draw ()
-  "Draw plate."
+(defun waffle-draw-plate-view ()
+  "Draw plate view."
   (save-excursion
 	(erase-buffer)
-	(goto-char 0)
+	(insert "                                 \n")
+	(waffle-draw-big-rect "bisque")
 	(if waffle-plate-filled
-		(insert
-" ______________________________________
-|         ___________________         |
-|     ----                   ----     |
-|   --                           --   |
-|  -                               -  |
-| |       O     O     O     O       | |
-| |                                 | |
-| |       O     O     O     O       | |
-| |                                 | |
-| |       O     O     O     O       | |
-| |                                 | |
-| |       O     O     O     O       | |
-| |                                 | |
-| |       O     O     O     O       | |
-|  -                               -  |
-|   --                           --   |
-|     ----                   ----     |
-|         -------------------         |
-|_____________________________________|")
-	  (insert
-" ______________________________________
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|_____________________________________|"))))
+		(waffle-draw-waffle))))
+
+(defun waffle-draw-waffle ()
+  (goto-char 70)
+  (waffle-draw-small-rect "chocolate")
+  (waffle-draw-pattern "peru"))
+
+(defun waffle-draw-big-rect (color)
+  (waffle-insert
+"█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████
+█████████████████████████████████" color nil)
+  (goto-char 0))
+
+(defun waffle-draw-small-rect (color)
+  (dotimes (i 15)
+	(waffle-replace
+	 "███████████████████████████████" color nil 31)
+	(forward-char 3))
+  (goto-char 0))
+
+(defun waffle-draw-pattern (color)
+	(dotimes (i 4)
+	  (forward-char 102)
+	  (dotimes (j 6)
+		(forward-char 3)
+		(waffle-replace "██" color nil 2))
+	  (forward-char 4)))
 
 (provide 'waffle-mode)
