@@ -91,100 +91,6 @@
   (setq-local waffle-iron-view nil)
   (waffle-plate-draw))
 
-(defun waffle-iron-draw ()
-  "Draw waffle iron."
-  (save-excursion
-	(erase-buffer)
-	(goto-char 0)
-	(if waffle-iron-filled
-		(insert
-"
-          ___________________          
-      ----                   ----      
-    --                           --    
-   -                               -   
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-   -                               -   
-    --                           --    
-      ----                   ----      
-          -------------------          
-                                       ")
-	  (insert
-"
-          ___________________          
-      ----                   ----      
-    --                           --    
-   -                               -   
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-  |                                 |  
-  |       O     O     O     O       |  
-   -                               -   
-    --                           --    
-      ----                   ----      
-          -------------------          
-                                       "))))
-
-(defun waffle-plate-draw ()
-  "Draw plate."
-  (save-excursion
-	(erase-buffer)
-	(goto-char 0)
-	(if waffle-plate-filled
-		(insert
-" _____________________________________
-|         ___________________         |
-|     ----                   ----     |
-|   --                           --   |
-|  -                               -  |
-| |       O     O     O     O       | |
-| |                                 | |
-| |       O     O     O     O       | |
-| |                                 | |
-| |       O     O     O     O       | |
-| |                                 | |
-| |       O     O     O     O       | |
-| |                                 | |
-| |       O     O     O     O       | |
-|  -                               -  |
-|   --                           --   |
-|     ----                   ----     |
-|         -------------------         |
-|_____________________________________|")
-	  (insert
-" _____________________________________
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|                                     |
-|_____________________________________|"))))
-
 (defun waffle-fill ()
   "Fill waffle iron with dough."
   (interactive)
@@ -276,8 +182,11 @@
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Bananas added to waffle")
-			 (setq-local waffle-bananas t))
+			 (setq-local waffle-bananas t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "▇" "yellow2" nil 10)))
 	(message "No waffle on plate.")))
+
 (defun waffle-add-butter ()
   "Add butter to waffle."
   (interactive)
@@ -348,5 +257,109 @@
 	  (progn (message "Strawberry banana yogurt added to waffle")
 			 (setq-local waffle-yogurt-strawbana t))
 	(message "No waffle on plate.")))
+
+(defun waffle-char (string fg bg)
+  "Replace character at point with string."
+  (delete-char 1)
+  (insert (propertize string 'face `(:foreground ,fg :background ,bg))))
+
+(defun waffle-randtop (string fg bg num)
+  "Randomly put toppings on waffle."
+  (save-excursion
+	(dotimes (i num) (goto-char (random 757)) (if (not (eq (% (point) 40) 0)) (waffle-char string fg bg)))))
+
+(defun waffle-iron-draw ()
+  "Draw waffle iron."
+  (save-excursion
+	(erase-buffer)
+	(goto-char 0)
+	(if waffle-iron-filled
+		(insert
+"
+          ___________________          
+      ----                   ----      
+    --                           --    
+   -                               -   
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+   -                               -   
+    --                           --    
+      ----                   ----      
+          -------------------          
+                                       ")
+	  (insert
+"
+          ___________________          
+      ----                   ----      
+    --                           --    
+   -                               -   
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+   -                               -   
+    --                           --    
+      ----                   ----      
+          -------------------          
+                                       "))))
+
+(defun waffle-plate-draw ()
+  "Draw plate."
+  (save-excursion
+	(erase-buffer)
+	(goto-char 0)
+	(if waffle-plate-filled
+		(insert
+" ______________________________________
+|         ___________________         |
+|     ----                   ----     |
+|   --                           --   |
+|  -                               -  |
+| |       O     O     O     O       | |
+| |                                 | |
+| |       O     O     O     O       | |
+| |                                 | |
+| |       O     O     O     O       | |
+| |                                 | |
+| |       O     O     O     O       | |
+| |                                 | |
+| |       O     O     O     O       | |
+|  -                               -  |
+|   --                           --   |
+|     ----                   ----     |
+|         -------------------         |
+|_____________________________________|")
+	  (insert
+" ______________________________________
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|_____________________________________|"))))
 
 (provide 'waffle-mode)
