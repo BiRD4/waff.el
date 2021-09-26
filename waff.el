@@ -43,8 +43,8 @@
 (add-hook 'waffle-mode-hook (lambda () (interactive)
 							  (visual-line-mode -1)
 							  (setq-local truncate-lines t)
-							  (setq-default waffle-iron-cooked1 0)
 							  (setq-default waffle-iron-cooked2 0)
+							  (setq-default waffle-iron-cooked1 0)
 							  (if (timerp waffle-timer) (cancel-timer waffle-timer))))
 
 ;; Cooking variables
@@ -54,14 +54,14 @@
   "Whether waffle iron is filled.")
 (defvar-local waffle-iron-flipped nil
   "Whether waffle iron is flipped.")
-(defvar-local waffle-iron-open nil
+(defvar waffle-iron-open nil
   "Whether waffle iron is open.")
 (defvar-local waffle-plate-filled nil
   "Whether plate is filled.")
 
-(defvar waffle-iron-cooked1 0
-  "How cooked first side of waffle in iron is.")
 (defvar waffle-iron-cooked2 0
+  "How cooked first side of waffle in iron is.")
+(defvar waffle-iron-cooked1 0
   "How cooked second side of waffle in iron is.")
 (defvar waffle-plate-cooked1 0
   "How cooked first side of waffle on plate is.")
@@ -123,7 +123,7 @@
   (interactive)
   (if waffle-iron-open
 	  (progn (message "Waffle iron closed.")
-			 (setq-local waffle-iron-open nil)
+			 (setq-default waffle-iron-open nil)
 			 (if waffle-iron-view
 				 (waffle-draw-iron-view)))
 	(message "Waffle iron already closed.")))
@@ -146,7 +146,7 @@
   (if waffle-iron-open
 	  (message "Waffle iron already open.")
 	(progn (message "Waffle iron opened.")
-		   (setq-local waffle-iron-open t)
+		   (setq-default waffle-iron-open t)
 		   (if waffle-iron-view
 			   (waffle-draw-iron-view)))))
 
@@ -159,17 +159,17 @@
 			  (message "No room on plate.")
 			(progn (message "Waffle removed.")
 				   (setq-local waffle-plate-cooked1 (if waffle-iron-flipped
-														waffle-iron-cooked2
-													  waffle-iron-cooked1))
-				   (setq-local waffle-plate-cooked2 (if waffle-iron-flipped
 														waffle-iron-cooked1
 													  waffle-iron-cooked2))
+				   (setq-local waffle-plate-cooked2 (if waffle-iron-flipped
+														waffle-iron-cooked2
+													  waffle-iron-cooked1))
 				   (cancel-timer waffle-timer)
 				   (setq-local waffle-plate-filled t)
 				   (setq-local waffle-iron-filled nil)
 				   (setq-local waffle-iron-flipped nil)
-				   (setq-default waffle-iron-cooked1 0)
 				   (setq-default waffle-iron-cooked2 0)
+				   (setq-default waffle-iron-cooked1 0)
 				   (if waffle-iron-view
 					   (waffle-draw-iron-view)
 					 (waffle-draw-plate-view))))
@@ -207,12 +207,12 @@
 (defun waffle-cook ()
   "Increment waffle cookedness."
   (if waffle-iron-flipped
-	  (progn (setq-default waffle-iron-cooked2 (+ waffle-iron-cooked2 4))
+	  (progn (setq-default waffle-iron-cooked1 (+ waffle-iron-cooked1 4))
 			 (if (not waffle-iron-open)
-				 (setq-default waffle-iron-cooked1 (+ waffle-iron-cooked1 1))))
-	(progn (setq-default waffle-iron-cooked1 (+ waffle-iron-cooked1 4))
+				 (setq-default waffle-iron-cooked2 (+ waffle-iron-cooked2 1))))
+	(progn (setq-default waffle-iron-cooked2 (+ waffle-iron-cooked2 4))
 		   (if (not waffle-iron-open)
-			   (setq-default waffle-iron-cooked2 (+ waffle-iron-cooked2 1)))))
+			   (setq-default waffle-iron-cooked1 (+ waffle-iron-cooked1 1)))))
   (if (and (eq major-mode 'waffle-mode) waffle-iron-view)
 	  (waffle-draw-iron-view)))
 
@@ -356,8 +356,41 @@
 
 (defun waffle-draw-waffle ()
   (goto-char 70)
-  (waffle-draw-small-rect "chocolate")
-  (waffle-draw-pattern "peru"))
+  (if waffle-iron-view
+	  (if waffle-iron-flipped
+		  (if (>= 10 waffle-iron-cooked2)
+			  (progn (waffle-draw-small-rect "sandy brown")
+					 (waffle-draw-pattern "peru"))
+			(if (>= 20 waffle-iron-cooked2)
+				(progn (waffle-draw-small-rect "peru")
+					   (waffle-draw-pattern "#6f452f"))
+			  (if (>= 40 waffle-iron-cooked2)
+				  (progn (waffle-draw-small-rect "#cd853f")
+						 (waffle-draw-pattern "#806533"))
+				(progn (waffle-draw-small-rect "#403010")
+					   (waffle-draw-pattern "#302010")))))
+		(if (>= 10 waffle-iron-cooked1)
+			(progn (waffle-draw-small-rect "sandy brown")
+				   (waffle-draw-pattern "peru"))
+		  (if (>= 20 waffle-iron-cooked1)
+			  (progn (waffle-draw-small-rect "peru")
+					 (waffle-draw-pattern "#6f452f"))
+			(if (>= 40 waffle-iron-cooked1)
+				(progn (waffle-draw-small-rect "#cd853f")
+					   (waffle-draw-pattern "#806533"))
+			  (progn (waffle-draw-small-rect "#403010")
+					 (waffle-draw-pattern "#302010"))))))
+		(if (>= 10 waffle-plate-cooked1)
+			(progn (waffle-draw-small-rect "sandy brown")
+				   (waffle-draw-pattern "peru"))
+		  (if (>= 20 waffle-plate-cooked1)
+			  (progn (waffle-draw-small-rect "peru")
+					 (waffle-draw-pattern "#6f452f"))
+			(if (>= 40 waffle-plate-cooked1)
+				(progn (waffle-draw-small-rect "#cd853f")
+					   (waffle-draw-pattern "#806533"))
+			  (progn (waffle-draw-small-rect "#403010")
+					 (waffle-draw-pattern "#302010")))))))
 
 (defun waffle-draw-big-rect (color)
   (waffle-insert
