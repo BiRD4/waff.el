@@ -44,7 +44,8 @@
 							  (visual-line-mode -1)
 							  (setq-local truncate-lines t)
 							  (setq-default waffle-iron-cooked1 0)
-							  (setq-default waffle-iron-cooked2 0)))
+							  (setq-default waffle-iron-cooked2 0)
+							  (if (timerp waffle-timer) (cancel-timer waffle-timer))))
 
 ;; Cooking variables
 (defvar-local waffle-iron-view t
