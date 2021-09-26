@@ -171,9 +171,9 @@
   "Eat waffle!"
   (interactive)
   (if waffle-plate-filled
-	  (progn (if (< 170 (max waffle-plate-cooked1 waffle-plate-cooked2))
+	  (progn (if (< 40 (max waffle-plate-cooked1 waffle-plate-cooked2))
 				 (message "*Chrunch* ...Wow, that one sure was toasty!")
-			   (if (> 130 (min waffle-plate-cooked1 waffle-plate-cooked2))
+			   (if (> 20 (min waffle-plate-cooked1 waffle-plate-cooked2))
 				   (message "*Mush* ...mmmm... tastes like... salmonella...")
 				 (message "Waffle eaten!")))
 			 (setq-local waffle-plate-filled nil)
