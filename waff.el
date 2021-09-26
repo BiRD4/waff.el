@@ -145,19 +145,21 @@
   (interactive)
   (if waffle-iron-filled
 	  (if waffle-iron-open
-		  (progn (message "Waffle removed.")
-				 (setq-local waffle-plate-cooked1 (if waffle-iron-flipped
-													  waffle-iron-cooked2
-													waffle-iron-cooked1))
-				 (setq-local waffle-plate-cooked2 (if waffle-iron-flipped
-													  waffle-iron-cooked1
-													waffle-iron-cooked2))
-				 (setq-local waffle-plate-filled t)
-				 (setq-local waffle-iron-filled nil)
-				 (setq-local waffle-iron-flipped nil)
-				 (setq-local waffle-iron-cooked1 0)
-				 (setq-local waffle-iron-cooked2 0)
-				 (if (not waffle-iron-view) (waffle-plate-draw)))
+		  (if waffle-plate-filled
+			  (message "No room on plate.")
+			(progn (message "Waffle removed.")
+				   (setq-local waffle-plate-cooked1 (if waffle-iron-flipped
+														waffle-iron-cooked2
+													  waffle-iron-cooked1))
+				   (setq-local waffle-plate-cooked2 (if waffle-iron-flipped
+														waffle-iron-cooked1
+													  waffle-iron-cooked2))
+				   (setq-local waffle-plate-filled t)
+				   (setq-local waffle-iron-filled nil)
+				   (setq-local waffle-iron-flipped nil)
+				   (setq-local waffle-iron-cooked1 0)
+				   (setq-local waffle-iron-cooked2 0)
+				   (if (not waffle-iron-view) (waffle-plate-draw))))
 		(message "Waffle iron not open."))
 	(message "No waffle to remove.")))
 
