@@ -2,10 +2,10 @@
 
 Make tasty waffles by filling the waffle iron with waffle dough, cooking it to perfection, and then putting toppings on your waffle.
 
-Use with (require 'waffle-mode)
+Use with `(require 'waffle-mode)`
 
 Don't call waffle-mode to enter the major mode in a buffer. **It will erase your buffer!**
-Call waffle-open instead. You can bind it like this: (global-set-key (kbd "C-c w") 'waffle-open)
+Call waffle-open instead. You can bind it like this: `(global-set-key (kbd "C-c w") 'waffle-open)`
 
 ## Keymap
 - <kbd>i</kbd> - waffle-view-iron                
