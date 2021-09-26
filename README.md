@@ -16,21 +16,21 @@ Keymap:
 - <kbd>o</kbd> - waffle-open                     
 - <kbd>r</kbd> - waffle-remove                   
 - <kbd>e</kbd> - waffle-eat                      
-- C-c C-b     - waffle-add-bananas              
-- C-c C-u     - waffle-add-butter               
-- C-c C-l     - waffle-add-blueberries          
-- C-c C-m     - waffle-add-maplesyrup           
-- C-c C-r     - waffle-add-raspberries          
-- C-c C-s     - waffle-add-strawberries         
-- C-c C-w     - waffle-add-whippedcream         
-- C-c C-y C-b - waffle-add-yogurt-blueberry     
-- C-c C-y C-k - waffle-add-yogurt-keylime       
-- C-c C-y C-m - waffle-add-yogurt-mango         
-- C-c C-y C-s - waffle-add-yogurt-strawban      
-- ? - waffle-help (will add later)
+- <kbd>C-c C-b</kbd> - waffle-add-bananas              
+- <kbd>C-c C-u</kbd> - waffle-add-butter               
+- <kbd>C-c C-l</kbd> - waffle-add-blueberries          
+- <kbd>C-c C-m</kbd> - waffle-add-maplesyrup           
+- <kbd>C-c C-r</kbd> - waffle-add-raspberries          
+- <kbd>C-c C-s</kbd> - waffle-add-strawberries         
+- <kbd>C-c C-w</kbd> - waffle-add-whippedcream         
+- <kbd>C-c C-y C-b</kbd> - waffle-add-yogurt-blueberry     
+- <kbd>C-c C-y C-k</kbd> - waffle-add-yogurt-keylime       
+- <kbd>C-c C-y C-m</kbd> - waffle-add-yogurt-mango         
+- <kbd>C-c C-y C-s</kbd> - waffle-add-yogurt-strawban      
+- <kbd>?</kbd> - waffle-help (will add later)
 
 Some alternatives:
-waffle-add-yogurt-blueberry     C-c C-y b
-waffle-add-yogurt-keylime       C-c C-y k
-waffle-add-yogurt-mango         C-c C-y m
-waffle-add-yogurt-strawban      C-c C-y s
+- <kbd>C-c C-y b</kbd> - waffle-add-yogurt-blueberry
+- <kbd>C-c C-y k</kbd> - waffle-add-yogurt-keylime
+- <kbd>C-c C-y m</kbd> - waffle-add-yogurt-mango
+- <kbd>C-c C-y s</kbd> - waffle-add-yogurt-strawban
