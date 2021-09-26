@@ -42,7 +42,9 @@
 
 (add-hook 'waffle-mode-hook (lambda () (interactive)
 							  (visual-line-mode -1)
-							  (setq-local truncate-lines t)))
+							  (setq-local truncate-lines t)
+							  (setq-default waffle-iron-cooked1 0)
+							  (setq-default waffle-iron-cooked2 0)))
 
 ;; Cooking variables
 (defvar-local waffle-iron-view t
@@ -56,14 +58,15 @@
 (defvar-local waffle-plate-filled nil
   "Whether plate is filled.")
 
-(defvar-local waffle-iron-cooked1 0
+(defvar waffle-iron-cooked1 0
   "How cooked first side of waffle in iron is.")
-(defvar-local waffle-iron-cooked2 0
+(defvar waffle-iron-cooked2 0
   "How cooked second side of waffle in iron is.")
-(defvar-local waffle-plate-cooked1 0
+(defvar waffle-plate-cooked1 0
   "How cooked first side of waffle on plate is.")
-(defvar-local waffle-plate-cooked2 0
+(defvar waffle-plate-cooked2 0
   "How cooked second side of waffle on plate is.")
+(defvar waffle-timer nil)
 
 ;; Topping variables
 (defvar-local waffle-bananas nil
@@ -109,7 +112,7 @@
 	(if waffle-iron-open
 		(progn (message "Waffle iron filled.")
 			   (setq-local waffle-iron-filled t)
-			   (waffle-cook))
+			   (setq waffle-timer (run-at-time "1 sec" 5 'waffle-cook)))
 	  (message "Waffle iron is not open."))))
 
 (defun waffle-close ()
@@ -154,6 +157,7 @@
 				   (setq-local waffle-plate-cooked2 (if waffle-iron-flipped
 														waffle-iron-cooked1
 													  waffle-iron-cooked2))
+				   (cancel-timer waffle-timer)
 				   (setq-local waffle-plate-filled t)
 				   (setq-local waffle-iron-filled nil)
 				   (setq-local waffle-iron-flipped nil)
@@ -192,13 +196,12 @@
 (defun waffle-cook ()
   "Increment waffle cookedness."
   (if waffle-iron-flipped
-	  (progn (setq-local waffle-iron-cooked2 (+ waffle-iron-cooked2 4))
+	  (progn (setq-default waffle-iron-cooked2 (+ waffle-iron-cooked2 4))
 			 (if (not waffle-iron-open)
-				 (setq-local waffle-iron-cooked1 (+ waffle-iron-cooked1 1))))
-	(progn (setq-local waffle-iron-cooked1 (+ waffle-iron-cooked1 4))
+				 (setq-default waffle-iron-cooked1 (+ waffle-iron-cooked1 1))))
+	(progn (setq-default waffle-iron-cooked1 (+ waffle-iron-cooked1 4))
 		   (if (not waffle-iron-open)
-			   (setq-local waffle-iron-cooked2 (+ waffle-iron-cooked2 1)))))
-  (if waffle-iron-filled (run-with-timer 5 nil 'waffle-cook)))
+			   (setq-default waffle-iron-cooked2 (+ waffle-iron-cooked2 1))))))
 
 ; There may be a better way to do the toppings :/
 (defun waffle-add-bananas ()
