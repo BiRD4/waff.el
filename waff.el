@@ -149,6 +149,12 @@
 				 (setq-local waffle-iron-filled nil)
 				 (setq-local waffle-iron-flipped nil)
 				 (setq-local waffle-plate-filled t)
+				 (setq-local waffle-plate-cooked1 (if waffle-iron-flipped
+													  waffle-iron-cooked2
+													waffle-iron-cooked1))
+				 (setq-local waffle-plate-cooked2 (if waffle-iron-flipped
+													  waffle-iron-cooked1
+													waffle-iron-cooked2))
 				 (if (not waffle-iron-view) (waffle-plate-draw)))
 		(message "Waffle iron not open."))
 	(message "No waffle to remove.")))
