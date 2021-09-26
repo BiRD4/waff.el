@@ -19,6 +19,11 @@
 	(define-key map "\C-c\C-r" 'waffle-add-raspberries)
 	(define-key map "\C-c\C-s" 'waffle-add-strawberries)
 	(define-key map "\C-c\C-w" 'waffle-add-whippedcream)
+	(define-key map "\C-c\C-y\C-b" 'waffle-add-yogurt-blueberry)
+	(define-key map "\C-c\C-y\C-k" 'waffle-add-yogurt-keylime)
+	(define-key map "\C-c\C-y\C-m" 'waffle-add-yogurt-mango)
+	(define-key map "\C-c\C-y\C-s" 'waffle-add-yogurt-strawban)
+	; Alts
 	(define-key map "\C-c\C-yb" 'waffle-add-yogurt-blueberry)
 	(define-key map "\C-c\C-yk" 'waffle-add-yogurt-keylime)
 	(define-key map "\C-c\C-ym" 'waffle-add-yogurt-mango)
@@ -186,76 +191,95 @@
 			 (if (not waffle-iron-view)
 				 (waffle-randtop "▇" "yellow2" nil 10)))
 	(message "No waffle on plate.")))
-
 (defun waffle-add-butter ()
   "Add butter to waffle."
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Butter added to waffle")
-			 (setq-local waffle-butter t))
+			 (setq-local waffle-butter t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "█" "light goldenrod" nil 40)))
 	(message "No waffle on plate.")))
 (defun waffle-add-blueberries ()
   "Add blueberries to waffle."
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Blueberries added to waffle")
-			 (setq-local waffle-blueberries t))
+			 (setq-local waffle-blueberries t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "▅" "dark blue" "midnight blue" 10)))
 	(message "No waffle on plate.")))
 (defun waffle-add-maplesyrup ()
   "Add maple syrup to waffle."
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Maple syrup added to waffle")
-			 (setq-local waffle-maplesyrup t))
+			 (setq-local waffle-maplesyrup t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "█" "saddle brown" nil 50)))
 	(message "No waffle on plate.")))
 (defun waffle-add-raspberries ()
   "Add raspberries to waffle."
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Raspberries added to waffle")
-			 (setq-local waffle-raspberries t))
+			 (setq-local waffle-raspberries t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "▅" "firebrick" "indian red" 10)))
 	(message "No waffle on plate.")))
 (defun waffle-add-strawberries ()
   "Add strawberries to waffle."
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Strawberries added to waffle")
-			 (setq-local waffle-strawberries t))
+			 (setq-local waffle-strawberries t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "▅" "dark red" "brown" 10)))
 	(message "No waffle on plate.")))
 (defun waffle-add-whippedcream ()
   "Add whipped cream to waffle."
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Whipped cream added to waffle")
-			 (setq-local waffle-whippedcream t))
+			 (setq-local waffle-whippedcream t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "█" "ivory" nil 50)))
 	(message "No waffle on plate.")))
 (defun waffle-add-yogurt-blueberry ()
   "Add blueberry yogurt to waffle."
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Blueberry yogurt added to waffle")
-			 (setq-local waffle-yogurt-blueberry t))
+			 (setq-local waffle-yogurt-blueberry t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "▆" "slate blue" "light slate blue" 30)))
 	(message "No waffle on plate.")))
 (defun waffle-add-yogurt-keylime ()
   "Add key lime yogurt to waffle."
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Key lime yogurt added to waffle")
-			 (setq-local waffle-yogurt-keylime t))
+			 (setq-local waffle-yogurt-keylime t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "▆" "aquamarine" "mint cream" 30)))
 	(message "No waffle on plate.")))
 (defun waffle-add-yogurt-mango ()
   "Add mango yogurt to waffle."
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Mango yogurt added to waffle")
-			 (setq-local waffle-yogurt-mango t))
+			 (setq-local waffle-yogurt-mango t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "▆" "dark orange" "orange" 30)))
 	(message "No waffle on plate.")))
 (defun waffle-add-yogurt-strawban ()
   "Add strawberry banana yogurt to waffle."
   (interactive)
   (if waffle-plate-filled
 	  (progn (message "Strawberry banana yogurt added to waffle")
-			 (setq-local waffle-yogurt-strawbana t))
+			 (setq-local waffle-yogurt-strawbana t)
+			 (if (not waffle-iron-view)
+				 (waffle-randtop "▆" "light coral" "hot pink" 30)))
 	(message "No waffle on plate.")))
 
 (defun waffle-char (string fg bg)
