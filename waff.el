@@ -55,10 +55,15 @@
   "Whether waffle iron is open.")
 (defvar-local waffle-plate-filled nil
   "Whether plate is filled.")
-(defvar-local waffle-cooked1 0
-  "How cooked first side of waffle is.")
-(defvar-local waffle-cooked2 0
-  "How cooked second side of waffle is.")
+
+(defvar-local waffle-iron-cooked1 0
+  "How cooked first side of waffle in iron is.")
+(defvar-local waffle-iron-cooked2 0
+  "How cooked second side of waffle in iron is.")
+(defvar-local waffle-plate-cooked1 0
+  "How cooked first side of waffle on plate is.")
+(defvar-local waffle-plate-cooked2 0
+  "How cooked second side of waffle on plate is.")
 
 ;; Topping variables
 (defvar-local waffle-bananas nil
@@ -154,8 +159,10 @@
   (if waffle-plate-filled
 	  (progn (message "Waffle eaten!")
 			 (setq-local waffle-plate-filled nil)
-			 (setq-local waffle-cooked1 0)
-			 (setq-local waffle-cooked2 0)
+			 (setq-local waffle-iron-cooked1 0)
+			 (setq-local waffle-iron-cooked2 0)
+			 (setq-local waffle-plate-cooked1 0)
+			 (setq-local waffle-plate-cooked2 0)
 			 (setq-local waffle-bananas nil)
 			 (setq-local waffle-butter nil)
 			 (setq-local waffle-blueberries nil)
@@ -173,12 +180,12 @@
 (defun waffle-cook ()
   "Increment waffle cookedness."
   (if waffle-iron-flipped
-	  (progn (setq-local waffle-cooked2 (+ waffle-cooked2 4))
+	  (progn (setq-local waffle-iron-cooked2 (+ waffle-iron-cooked2 4))
 			 (if (not waffle-iron-open)
-				 (setq-local waffle-cooked1 (+ waffle-cooked1 1))))
-	(progn (setq-local waffle-cooked1 (+ waffle-cooked1 4))
+				 (setq-local waffle-iron-cooked1 (+ waffle-iron-cooked1 1))))
+	(progn (setq-local waffle-iron-cooked1 (+ waffle-iron-cooked1 4))
 		   (if (not waffle-iron-open)
-			   (setq-local waffle-cooked2 (+ waffle-cooked2 1)))))
+			   (setq-local waffle-iron-cooked2 (+ waffle-iron-cooked2 1)))))
   (if waffle-iron-filled (run-with-timer 5 nil 'waffle-cook)))
 
 ; There may be a better way to do the toppings :/
