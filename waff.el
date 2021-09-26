@@ -3,14 +3,18 @@
 (if (boundp 'waffle-mode-map) (makunbound 'waffle-mode-map)) ; convenience
 (defvar waffle-mode-map
   (let ((map (make-sparse-keymap)))
+	(define-key map "i" 'waffle-view-iron)
+	(define-key map "p" 'waffle-view-plate)
 	(define-key map "f" 'waffle-fill)
+	(define-key map "c" 'waffle-close)
 	(define-key map "l" 'waffle-flip)
+	(define-key map "o" 'waffle-open)
 	(define-key map "r" 'waffle-remove)
 	(define-key map "e" 'waffle-eat)
-	(define-key map "a" 'waffle-add)
+	;; (define-key map "a" 'waffle-add)
 	(define-key map "\C-c\C-b" 'waffle-add-bananas)
 	(define-key map "\C-c\C-u" 'waffle-add-butter)
-	(define-key map "\C-c\C-r" 'waffle-add-blueberries)
+	(define-key map "\C-c\C-l" 'waffle-add-blueberries)
 	(define-key map "\C-c\C-m" 'waffle-add-maplesyrup)
 	(define-key map "\C-c\C-r" 'waffle-add-raspberries)
 	(define-key map "\C-c\C-s" 'waffle-add-strawberries)
@@ -31,15 +35,21 @@
 	(evil-make-overriding-map waffle-mode-map))
 ;; (add-to-list 'evil-motion-state-modes 'waffle-mode) ; Doesn't work for all binds
 
-(add-hook 'waffle-mode-hook (lambda () (interactive) (visual-line-mode -1) (setq-local truncate-lines t)))
+(add-hook 'waffle-mode-hook (lambda () (interactive)
+							  (visual-line-mode -1)
+							  (setq-local truncate-lines t)))
 
 ;; Cooking variables
+(defvar-local waffle-iron-view t
+  "Current view. t for iron view, nil for plate view.")
 (defvar-local waffle-iron-filled nil
   "Whether waffle iron is filled.")
 (defvar-local waffle-iron-flipped nil
   "Whether waffle iron is flipped.")
+(defvar-local waffle-iron-open nil
+  "Whether waffle iron is open.")
 (defvar-local waffle-plate-filled nil
-  "Whether waffle plate is filled.")
+  "Whether plate is filled.")
 (defvar-local waffle-cooked1 0
   "How cooked first side of waffle is.")
 (defvar-local waffle-cooked2 0
@@ -69,33 +79,162 @@
 (defvar-local waffle-yogurt-strawbana nil
   "Whether waffle has strawberry banana yogurt.")
 
+(defun waffle-view-iron ()
+  "View waffle iron."
+  (interactive)
+  (setq-local waffle-iron-view t)
+  (waffle-iron-draw))
+
+(defun waffle-view-plate ()
+  "View waffle plate."
+  (interactive)
+  (setq-local waffle-iron-view nil)
+  (waffle-plate-draw))
+
+(defun waffle-iron-draw ()
+  "Draw waffle iron."
+  (save-excursion
+	(erase-buffer)
+	(goto-char 0)
+	(if waffle-iron-filled
+		(insert
+"
+          ___________________          
+      ----                   ----      
+    --                           --    
+   -                               -   
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+   -                               -   
+    --                           --    
+      ----                   ----      
+          -------------------          
+                                       ")
+	  (insert
+"
+          ___________________          
+      ----                   ----      
+    --                           --    
+   -                               -   
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+  |                                 |  
+  |       O     O     O     O       |  
+   -                               -   
+    --                           --    
+      ----                   ----      
+          -------------------          
+                                       "))))
+
+(defun waffle-plate-draw ()
+  "Draw plate."
+  (save-excursion
+	(erase-buffer)
+	(goto-char 0)
+	(if waffle-plate-filled
+		(insert
+" _____________________________________
+|         ___________________         |
+|     ----                   ----     |
+|   --                           --   |
+|  -                               -  |
+| |       O     O     O     O       | |
+| |                                 | |
+| |       O     O     O     O       | |
+| |                                 | |
+| |       O     O     O     O       | |
+| |                                 | |
+| |       O     O     O     O       | |
+| |                                 | |
+| |       O     O     O     O       | |
+|  -                               -  |
+|   --                           --   |
+|     ----                   ----     |
+|         -------------------         |
+|_____________________________________|")
+	  (insert
+" _____________________________________
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|                                     |
+|_____________________________________|"))))
+
 (defun waffle-fill ()
   "Fill waffle iron with dough."
   (interactive)
-  (if (not waffle-iron-filled)
-	  (progn (message "Waffle iron filled.")
-			 (setq-local waffle-iron-filled t)
-			 (waffle-cook))
-	(message "Waffle iron already filled.")))
+  (if waffle-iron-filled
+	  (message "Waffle iron already filled.")
+	(if waffle-iron-open
+		(progn (message "Waffle iron filled.")
+			   (setq-local waffle-iron-filled t)
+			   (waffle-cook))
+	  (message "Waffle iron is not open."))))
+
+(defun waffle-close ()
+  "Close waffle iron."
+  (interactive)
+  (if waffle-iron-open
+	  (progn (message "Waffle iron closed.")
+			 (setq-local waffle-iron-open nil))
+	(message "Waffle iron already closed.")))
 
 (defun waffle-flip ()
   "Flip waffle iron."
   (interactive)
   (if waffle-iron-filled
-	  (progn (message "Waffle flipped.")
-			 (if waffle-iron-flipped
-				 (setq-local waffle-iron-flipped nil)
-			   (setq-local waffle-iron-flipped t)))
+	  (if waffle-iron-open
+		  (message "Waffle iron not closed.")
+		(progn (message "Waffle flipped.")
+			   (if waffle-iron-flipped
+				   (setq-local waffle-iron-flipped nil)
+				 (setq-local waffle-iron-flipped t))))
 	(message "No waffle to flip.")))
+
+(defun waffle-open ()
+  "Open waffle iron."
+  (interactive)
+  (if waffle-iron-open
+	  (message "Waffle iron already open.")
+	(progn (message "Waffle iron opened.")
+		   (setq-local waffle-iron-open t))))
 
 (defun waffle-remove ()
   "Remove waffle from waffle iron."
   (interactive)
   (if waffle-iron-filled
-	  (progn (message "Waffle removed.")
-			 (setq-local waffle-iron-filled nil)
-			 (setq-local waffle-iron-flipped nil)
-			 (setq-local waffle-plate-filled t))
+	  (if waffle-iron-open
+		  (progn (message "Waffle removed.")
+				 (setq-local waffle-iron-filled nil)
+				 (setq-local waffle-iron-flipped nil)
+				 (setq-local waffle-plate-filled t)
+				 (if (not waffle-iron-view) (waffle-plate-draw)))
+		(message "Waffle iron not open."))
 	(message "No waffle to remove.")))
 
 (defun waffle-eat ()
@@ -116,19 +255,22 @@
 			 (setq-local waffle-yogurt-blueberry nil)
 			 (setq-local waffle-yogurt-keylime nil)
 			 (setq-local waffle-yogurt-mango nil)
-			 (setq-local waffle-yogurt-strawbana nil))
+			 (setq-local waffle-yogurt-strawbana nil)
+			 (if (not waffle-iron-view) (waffle-plate-draw)))
 	(message "No waffle to eat ;(")))
 
 (defun waffle-cook ()
   "Increment waffle cookedness."
   (if waffle-iron-flipped
-	  (progn (setq-local waffle-cooked1 (+ waffle-cooked1 1))
-			 (setq-local waffle-cooked2 (+ waffle-cooked2 4)))
+	  (progn (setq-local waffle-cooked2 (+ waffle-cooked2 4))
+			 (if (not waffle-iron-open)
+				 (setq-local waffle-cooked1 (+ waffle-cooked1 1))))
 	(progn (setq-local waffle-cooked1 (+ waffle-cooked1 4))
-		   (setq-local waffle-cooked2 (+ waffle-cooked2 1))))
+		   (if (not waffle-iron-open)
+			   (setq-local waffle-cooked2 (+ waffle-cooked2 1)))))
   (if waffle-iron-filled (run-with-timer 5 nil 'waffle-cook)))
 
-; There may be a better way to do this :/
+; There may be a better way to do the toppings :/
 (defun waffle-add-bananas ()
   "Add bananas to waffle."
   (interactive)
